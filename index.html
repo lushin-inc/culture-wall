@@ -4,24 +4,21 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Culture Wall</title>
-<meta name="description" content="All 35 Lushin culture tiles laid out in wall order. Tap any tile to read what it means and what living it out looks like.">
+<meta name="description" content="All 35 culture tiles in wall order. Open any tile to read what it means.">
 <link rel="canonical" href="https://lushin-inc.github.io/culture-wall/">
 
 <meta property="og:type" content="website">
-<meta property="og:site_name" content="Lushin">
+<meta property="og:site_name" content="Culture Wall">
 <meta property="og:title" content="Culture Wall">
-<meta property="og:description" content="All 35 Lushin culture tiles in wall order. Tap a tile to read it.">
+<meta property="og:description" content="All 35 culture tiles in wall order. Open any tile to read what it means.">
 <meta property="og:url" content="https://lushin-inc.github.io/culture-wall/">
 <meta property="og:image" content="https://lushin-inc.github.io/culture-wall/og.png">
 <meta property="og:image:secure_url" content="https://lushin-inc.github.io/culture-wall/og.png">
-<meta property="og:image:type" content="image/png">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="Culture Wall">
 
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Culture Wall">
-<meta name="twitter:description" content="All 35 Lushin culture tiles in wall order. Tap a tile to read it.">
+<meta name="twitter:description" content="All 35 culture tiles in wall order. Open any tile to read what it means.">
 <meta name="twitter:image" content="https://lushin-inc.github.io/culture-wall/og.png">
 
 <meta name="theme-color" content="#F2F3F7">
@@ -33,9 +30,6 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap">
-<style>body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
-</head>
-<body>
 <style>
   :root {
     --bg: #F2F3F7;
@@ -47,7 +41,6 @@
     --line: #DFE2EE;
     --accent: #00ADED;
     --accent-ink: #FFFFFF;
-    --scrim: rgba(33, 36, 92, .45);
     --shadow: 0 10px 28px rgba(33, 36, 92, .12);
     --shadow-sm: 0 2px 8px rgba(33, 36, 92, .08);
   }
@@ -63,7 +56,6 @@
       --line: #2E3365;
       --accent: #3AC6F5;
       --accent-ink: #0B1026;
-      --scrim: rgba(4, 6, 18, .7);
       --shadow: 0 10px 28px rgba(0, 0, 0, .45);
       --shadow-sm: 0 2px 8px rgba(0, 0, 0, .35);
       color-scheme: dark;
@@ -79,7 +71,6 @@
     --line: #2E3365;
     --accent: #3AC6F5;
     --accent-ink: #0B1026;
-    --scrim: rgba(4, 6, 18, .7);
     --shadow: 0 10px 28px rgba(0, 0, 0, .45);
     --shadow-sm: 0 2px 8px rgba(0, 0, 0, .35);
     color-scheme: dark;
@@ -97,18 +88,20 @@
     -webkit-font-smoothing: antialiased;
     -webkit-tap-highlight-color: transparent;
   }
-  body.locked { overflow: hidden; }
+  img { max-width: 100%; }
 
   .wrap {
-    max-width: 1180px;
     margin: 0 auto;
     padding-inline: 16px;
-    padding-block: 18px 40px;
+    padding-block: 18px 48px;
     display: flex;
     flex-direction: column;
     gap: 18px;
   }
+  .wrap-wall { max-width: 1180px; }
+  .wrap-tile { max-width: 720px; }
 
+  /* ---- top bar ---- */
   .topbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
   .topbar h1 {
     margin: 0;
@@ -117,6 +110,21 @@
     letter-spacing: -0.01em;
     color: var(--ink-soft);
   }
+  .back {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--ink-soft);
+    text-decoration: none;
+    padding: 6px 10px 6px 4px;
+    border-radius: 999px;
+  }
+  .back:hover { color: var(--ink); }
+  .back svg { width: 18px; height: 18px; flex: none; }
+  .back:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+
   .theme-btn {
     appearance: none;
     border: 1px solid var(--line);
@@ -129,6 +137,7 @@
     transition: border-color .15s ease, color .15s ease;
   }
   .theme-btn:hover { color: var(--ink); border-color: var(--ink-faint); }
+  .theme-btn:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
   .theme-btn svg { width: 19px; height: 19px; display: block; }
   :root:not([data-theme="dark"]) .icon-sun { display: none; }
   :root:not([data-theme="dark"]) .icon-moon { display: block; }
@@ -136,12 +145,7 @@
   :root[data-theme="dark"] .icon-sun { display: block; }
 
   /* ---- tag filters ---- */
-  .filters {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-    margin-top: -4px;
-  }
+  .filters { display: flex; flex-wrap: wrap; gap: 6px; margin-top: -4px; }
   .pill {
     appearance: none;
     font-family: inherit;
@@ -165,92 +169,28 @@
   .pill:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
 
   /* ---- the wall ---- */
-  .wall {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    gap: 4px;
-  }
+  .wall { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
   @media (min-width: 560px) { .wall { gap: 8px; } }
 
   .tile {
-    appearance: none;
-    border: 0;
-    padding: 0;
-    margin: 0;
     display: block;
     width: 100%;
     aspect-ratio: 16 / 9;
     border-radius: 3px;
     overflow: hidden;
     background: var(--surface-2);
-    cursor: pointer;
-    position: relative;
-    transition: transform .12s ease, box-shadow .12s ease;
+    transition: transform .12s ease, box-shadow .12s ease, opacity .12s ease;
   }
   @media (min-width: 560px) { .tile { border-radius: 6px; } }
-  .tile img {
-    width: 100%; height: 100%;
-    object-fit: cover;
-    object-position: center;
-    display: block;
-  }
+  .tile img { width: 100%; height: 100%; object-fit: cover; object-position: center; display: block; }
   .tile:hover { transform: translateY(-2px); box-shadow: var(--shadow-sm); z-index: 1; }
+  .tile:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; z-index: 2; }
   .tile.dim { opacity: .16; filter: grayscale(1); pointer-events: none; }
   .tile.dim:hover { transform: none; box-shadow: none; }
-  .tile:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; z-index: 2; }
 
-  /* ---- detail sheet ---- */
-  .sheet {
-    position: fixed;
-    inset: 0;
-    z-index: 50;
-    background: var(--scrim);
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
-    padding: 0;
-  }
-  @media (min-width: 720px) { .sheet { padding: 40px 20px; } }
-
-  .sheet-inner {
-    background: var(--bg);
+  /* ---- tile page ---- */
+  .hero {
     width: 100%;
-    max-width: 680px;
-    min-height: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
-    padding: 14px 18px 40px;
-  }
-  @media (min-width: 720px) {
-    .sheet-inner {
-      min-height: 0;
-      border-radius: 20px;
-      box-shadow: var(--shadow);
-      padding: 16px 28px 32px;
-    }
-  }
-
-  .sheet-bar { display: flex; justify-content: flex-end; }
-  .sheet-close {
-    appearance: none;
-    border: 1px solid var(--line);
-    background: var(--surface);
-    color: var(--ink-soft);
-    width: 42px; height: 42px;
-    border-radius: 999px;
-    display: grid; place-items: center;
-    cursor: pointer;
-    font-size: 20px; line-height: 1;
-  }
-  .sheet-close:hover { color: var(--ink); border-color: var(--ink-faint); }
-  .sheet-close:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
-
-  .sheet img.hero {
-    width: 100%;
-    max-width: 100%;
     aspect-ratio: 1920 / 1080;
     object-fit: cover;
     display: block;
@@ -258,58 +198,62 @@
     box-shadow: var(--shadow);
     background: var(--surface-2);
   }
-
+  .lead { display: flex; flex-direction: column; gap: 8px; }
   .tag {
+    align-self: flex-start;
     font-size: 11px;
     font-weight: 500;
     letter-spacing: .14em;
     text-transform: uppercase;
     color: var(--accent);
+    text-decoration: none;
   }
-  .sheet h2 {
-    margin: -6px 0 0;
-    font-size: 24px;
-    line-height: 1.28;
+  .tag:hover { text-decoration: underline; }
+  .tag:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+  .lead h2 {
+    margin: 0;
+    font-size: 26px;
+    line-height: 1.25;
     font-weight: 600;
-    letter-spacing: -0.015em;
+    letter-spacing: -0.02em;
     color: var(--ink);
     text-wrap: balance;
   }
 
-  .prose { display: flex; flex-direction: column; gap: 14px; max-width: 65ch; }
+  .prose { display: flex; flex-direction: column; gap: 16px; max-width: 62ch; }
   .prose p {
     margin: 0;
-    font-size: 16px;
-    line-height: 1.65;
+    font-size: 17px;
+    line-height: 1.68;
     font-weight: 300;
     color: var(--ink);
   }
-  .prose p:last-child { color: var(--ink-soft); }
 
-  .sheet-nav { display: flex; flex-direction: column; gap: 10px; margin-top: 6px; }
+  .pager { display: flex; flex-direction: column; gap: 10px; margin-top: 10px; }
   .navbtn {
-    appearance: none;
+    display: block;
     width: 100%;
+    text-align: center;
     border-radius: 999px;
     padding: 15px 20px;
-    font-family: inherit;
     font-size: 16px;
     font-weight: 500;
-    cursor: pointer;
     background: var(--surface);
     color: var(--ink);
     border: 1px solid var(--line);
+    text-decoration: none;
     transition: border-color .15s ease;
   }
   .navbtn:hover { border-color: var(--ink-faint); }
   .navbtn:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
-  .navbtn[disabled] { opacity: .4; cursor: default; }
 
   [hidden] { display: none !important; }
   @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
-</style>
 
-<div class="wrap">
+</style>
+</head>
+<body>
+<div class="wrap wrap-wall">
   <div class="topbar">
     <h1>Culture Wall</h1>
     <button class="theme-btn" id="themeBtn" type="button" aria-label="Switch between light and dark">
@@ -318,160 +262,105 @@
     </button>
   </div>
 
-  <div class="filters" id="filters" role="group" aria-label="Filter by tag"></div>
+  <div class="filters" id="filters" role="group" aria-label="Filter by tag">
+      <button class="pill" type="button" data-tag="" aria-pressed="true">All</button>
+      <button class="pill" type="button" data-tag="worth" aria-pressed="false">Worth</button>
+      <button class="pill" type="button" data-tag="failure" aria-pressed="false">Failure</button>
+      <button class="pill" type="button" data-tag="mission" aria-pressed="false">Mission</button>
+      <button class="pill" type="button" data-tag="growth" aria-pressed="false">Growth</button>
+      <button class="pill" type="button" data-tag="ownership" aria-pressed="false">Ownership</button>
+      <button class="pill" type="button" data-tag="candor" aria-pressed="false">Candor</button>
+      <button class="pill" type="button" data-tag="sharpen-each-other" aria-pressed="false">Sharpen Each Other</button>
+      <button class="pill" type="button" data-tag="we" aria-pressed="false">We</button>
+      <button class="pill" type="button" data-tag="perspective" aria-pressed="false">Perspective</button>
+      <button class="pill" type="button" data-tag="selling" aria-pressed="false">Selling</button>
+      <button class="pill" type="button" data-tag="hierarchy" aria-pressed="false">Hierarchy</button>
+  </div>
 
-  <div class="wall" id="wall"></div>
-</div>
-
-<div class="sheet" id="sheet" hidden role="dialog" aria-modal="true" aria-labelledby="sheetTitle">
-  <div class="sheet-inner">
-    <div class="sheet-bar">
-      <button class="sheet-close" id="closeBtn" type="button" aria-label="Close">&times;</button>
-    </div>
-    <img class="hero" id="sheetImg" alt="">
-    <span class="tag" id="sheetTag"></span>
-    <h2 id="sheetTitle"></h2>
-    <div class="prose" id="sheetBody"></div>
-    <div class="sheet-nav">
-      <button class="navbtn" id="prevBtn" type="button">Previous tile</button>
-      <button class="navbtn" id="nextBtn" type="button">Next tile</button>
-    </div>
+  <div class="wall" id="wall">
+      <a class="tile" href="t/we-like-the-original-you-at-the-very-core.html" data-tag="worth" aria-label="We like the original you at the very core."><img src="tiles/002.jpg" alt=""></a>
+      <a class="tile" href="t/lift-while-we-climb.html" data-tag="sharpen-each-other" aria-label="Lift while we climb."><img src="tiles/024.jpg" alt=""></a>
+      <a class="tile" href="t/all-models-are-wrong-but-some-are-useful.html" data-tag="perspective" aria-label="All models are wrong, but some are useful."><img src="tiles/032.jpg" alt=""></a>
+      <a class="tile" href="t/risk-how-much-we-got-your-back.html" data-tag="growth" aria-label="Risk... How much we got your back."><img src="tiles/015.jpg" alt=""></a>
+      <a class="tile" href="t/hunger-is-the-best-spice.html" data-tag="growth" aria-label="Hunger is the best spice."><img src="tiles/013.jpg" alt=""></a>
+      <a class="tile" href="t/owners-own-their-relationships-employees-rent-them.html" data-tag="ownership" aria-label="Owners own their relationships. Employees rent them."><img src="tiles/018.jpg" alt=""></a>
+      <a class="tile" href="t/nobody-has-all-the-answers-thats-why-we-have-each-other.html" data-tag="we" aria-label="Nobody has all the answers. That’s why we have each other."><img src="tiles/028.jpg" alt=""></a>
+      <a class="tile" href="t/growth-mindset-begins-with-personal-growth.html" data-tag="growth" aria-label="Growth mindset begins with personal growth."><img src="tiles/012.jpg" alt=""></a>
+      <a class="tile" href="t/enthusiasm-is-shallow-passion-runs-deep.html" data-tag="mission" aria-label="Enthusiasm is shallow. Passion runs deep."><img src="tiles/005.jpg" alt=""></a>
+      <a class="tile" href="t/the-best-way-to-sell-is-to-create-experiences-and-meaning.html" data-tag="selling" aria-label="The best way to sell is to create experiences and meaning."><img src="tiles/033.jpg" alt=""></a>
+      <a class="tile" href="t/create-growth-by-creating-the-problem.html" data-tag="growth" aria-label="Create growth by creating the problem."><img src="tiles/011.jpg" alt=""></a>
+      <a class="tile" href="t/one-bad-apple-doesnt-write-the-rules.html" data-tag="we" aria-label="One bad apple doesn’t write the rules."><img src="tiles/029.jpg" alt=""></a>
+      <a class="tile" href="t/its-your-birthright-to-matter-purpose-is-how-you-make-it.html" data-tag="mission" aria-label="It’s your birthright to matter. Purpose is how you make it happen."><img src="tiles/006.jpg" alt=""></a>
+      <a class="tile" href="t/assume-good-intent.html" data-tag="candor" aria-label="Assume good intent."><img src="tiles/020.jpg" alt=""></a>
+      <a class="tile" href="t/hierarchical-on-the-inside-flat-on-the-outside.html" data-tag="hierarchy" aria-label="Hierarchical on the inside. Flat on the outside."><img src="tiles/035.jpg" alt=""></a>
+      <a class="tile" href="t/we-have-fun.html" data-tag="we" aria-label="We have fun!"><img src="tiles/031.jpg" alt=""></a>
+      <a class="tile" href="t/foundational-stop-whining-start-owning.html" data-tag="ownership" aria-label="Foundational... Stop whining. Start owning."><img src="tiles/016.jpg" alt=""></a>
+      <a class="tile" href="t/from-me-to-we.html" data-tag="we" aria-label="From me to we."><img src="tiles/027.jpg" alt=""></a>
+      <a class="tile" href="t/mission-leads-to-money-not-vice-versa.html" data-tag="mission" aria-label="Mission leads to money, not vice versa."><img src="tiles/008.jpg" alt=""></a>
+      <a class="tile" href="t/ownership-can-only-be-accepted-not-assigned.html" data-tag="ownership" aria-label="Ownership can only be accepted, not assigned."><img src="tiles/019.jpg" alt=""></a>
+      <a class="tile" href="t/being-around-strong-people-requires-a-thick-skin.html" data-tag="candor" aria-label="Being around strong people requires a thick skin."><img src="tiles/021.jpg" alt=""></a>
+      <a class="tile" href="t/people-come-to-us-to-sharpen-their-sword-so-we-need-to.html" data-tag="sharpen-each-other" aria-label="People come to us to sharpen their sword, so we need to always be sharpening ours."><img src="tiles/025.jpg" alt=""></a>
+      <a class="tile" href="t/racing-cars-when-you-push-the-limits-you-crash-more-often.html" data-tag="growth" aria-label="Racing cars... When you push the limits, you crash more often. C’est la guerre."><img src="tiles/014.jpg" alt=""></a>
+      <a class="tile" href="t/people-are-human-hence-the-constant-need-for-forgiveness.html" data-tag="we" aria-label="People are human, hence the constant need for forgiveness. Put it behind you and move on."><img src="tiles/030.jpg" alt=""></a>
+      <a class="tile" href="t/truth-over-harmony.html" data-tag="candor" aria-label="Truth over harmony."><img src="tiles/023.jpg" alt=""></a>
+      <a class="tile" href="t/boss-is-not-a-useful-term.html" data-tag="hierarchy" aria-label="Boss is not a useful term."><img src="tiles/034.jpg" alt=""></a>
+      <a class="tile" href="t/the-ripple-effect-intention-making-a-difference-success.html" data-tag="mission" aria-label="The ripple effect... Intention → Making a difference → Success and money."><img src="tiles/009.jpg" alt=""></a>
+      <a class="tile" href="t/feedback-comes-from-the-heart-not-ego.html" data-tag="candor" aria-label="Feedback comes from the heart, not ego."><img src="tiles/022.jpg" alt=""></a>
+      <a class="tile" href="t/buy-the-decision.html" data-tag="growth" aria-label="Buy the decision."><img src="tiles/010.jpg" alt=""></a>
+      <a class="tile" href="t/learning-from-failure-is-essential-to-progress.html" data-tag="failure" aria-label="Learning from failure is essential to progress."><img src="tiles/003.jpg" alt=""></a>
+      <a class="tile" href="t/life-is-too-short-not-to-do-something-that-matters.html" data-tag="mission" aria-label="Life is too short not to do something that matters."><img src="tiles/007.jpg" alt=""></a>
+      <a class="tile" href="t/leadership-ownership.html" data-tag="ownership" aria-label="Leadership. Ownership."><img src="tiles/017.jpg" alt=""></a>
+      <a class="tile" href="t/when-we-level-up-we-elevate-each-others-journey.html" data-tag="sharpen-each-other" aria-label="When we level up, we elevate each other’s journey."><img src="tiles/026.jpg" alt=""></a>
+      <a class="tile" href="t/success-is-just-failure-thats-been-played-around-with-a.html" data-tag="failure" aria-label="Success is just failure that’s been played around with... a lot."><img src="tiles/004.jpg" alt=""></a>
+      <a class="tile" href="t/spit-on-it-stomp-on-it-tell-it-its-stupid-still-has-the.html" data-tag="worth" aria-label="Spit on it. Stomp on it. Tell it it&#x27;s stupid. Still has the same value."><img src="tiles/001.jpg" alt=""></a>
   </div>
 </div>
 
 <script>
 (function () {
-  var WALL = [{"title":"We like the original you at the very core.","tag":"Worth","img":"tiles/002.jpg","body":["My son Ellis won't play lacrosse, because his brother plays lacrosse. But he will play Monopoly, and he beats every adult in our house at it, and he does it by sitting on his money the entire game and then buying two properties and bankrupting the table. Nobody taught him that. It's just how he came.","Here's the law. The original is the asset. The copy is the liability.","And I forget it about every six weeks. I'll watch somebody good run a session and catch myself the next day doing a thin impression of them, using their phrases, and it lands exactly as well as you'd expect. Borrowed material sounds borrowed. People can't name it and they can always feel it.","So what would somebody see? They'd see me coach in my own voice, with my own weird detours, and say the odd thing that just occurred to me, because the odd thing is usually the useful thing. They'd see me tell a story from my own life instead of a case study out of a binder. And they'd see me stop sanding myself down into a generic consultant, which is a project I have been quietly working on for years.","The part I keep trying to sand off is the part they hired."]},{"title":"Lift while we climb.","tag":"Sharpen Each Other","img":"tiles/024.jpg","body":["Look at the picture for a second. Two climbers on an orange wall, one of them higher up, a rope running down to the other one. And nobody is at the top. There's no summit in the frame at all.","That's the whole idea. Neither of them has arrived. The lifting is happening mid-climb, which is the only place it has ever happened.","Because there is no moment where I officially arrive and then begin helping people. I've been waiting on that moment for six years. It isn't coming.","And my progress and somebody else's are not in competition, even though they feel like it the minute a board goes up on a wall.","So what does it look like? Sharing what's working with the other coaches instead of keeping the good version for myself. Bringing a newer person into something good rather than filling the seat myself, which I can always justify in about four seconds. Making the introduction. Handing over the deck, the framework, the client read, without being asked twice.","It costs almost nothing to drop a rope. It costs a man everything not to have one."]},{"title":"All models are wrong, but some are useful.","tag":"Perspective","img":"tiles/032.jpg","body":["Every map of the world is wrong. The flat one on the classroom wall makes Greenland look about the size of Africa, and Africa is fourteen times bigger. And people still get to Africa.","The map isn't true. The map is useful.","Every framework is that same deal. A simplification of something messier, drawn by somebody with a purpose in mind.","So the question is never whether the model is true. The question is whether this model helps this person right now.","And the moment I'm defending a framework instead of using it, I've swapped the two, and now I'm having a conversation about me. You can win a methodology argument and lose the client, which is a very complete kind of losing.","Somebody would see me pick the framework that fits the situation, not the one I'm most comfortable teaching. Saying out loud that a model is a lens and not physics, so nobody mistakes it for law. Dropping a tool mid-session when it clearly isn't landing, without explaining why it should have landed. And never arguing methodology with anybody, ever.","Hold the model loosely. Hold the person tightly."]},{"title":"Risk... How much we got your back.","tag":"Growth","img":"tiles/015.jpg","body":["Nobody does a backflip on a four-inch beam without a spotter standing there. Take the spotter away and the gymnast doesn't become braver. She does a smaller trick.","That's the whole tile. How much risk a person takes is a function of how covered they feel. It is almost never a function of how brave they are.","Risk isn't a character trait. It's a backing question. And that reframe moves who's responsible for it, which is me.","I've gotten it wrong in both directions. I've asked reps to take swings without ever telling them what happens if it goes sideways. And I've played small myself because I didn't want to need anybody, which is a strange kind of pride in a man whose entire job is telling other people to ask for help.","Somebody would see me tell a rep flat out that I'll back him if this goes badly, and then actually do it when it does. Taking the heat in public for something a teammate tried. Asking for cover myself before I need it rather than after.","Tell them you've got them. Then have them.","The wall doesn't live it. I do."]},{"title":"Hunger is the best spice.","tag":"Growth","img":"tiles/013.jpg","body":["A gas station ham sandwich at four in the afternoon, after you skipped lunch, is one of the great meals in American life. The same sandwich at nine in the morning, right after breakfast, is a crime against a person.","The sandwich didn't change. You did.","Appetite makes everything better, and the same work tastes entirely different when I actually want what's on the other side of it.","So the belief is that motivation follows desire more than it follows discipline. Discipline gets me through a week. Wanting something gets me through a year. And comfort has dulled me faster than failure ever has.","I know what this looks like in me. When I'm hungry I move fast and I make business appear out of nowhere. When I'm comfortable I get organized. Getting organized is what I do instead of selling.","Somebody would see me keep a goal in front of me that I actually want, not one I think I'm supposed to want. Going after the accounts that genuinely interest me rather than the ones that happen to be available. And when I catch myself coasting, putting something on the calendar that makes me a little nervous, instead of waiting for the appetite to come back on its own.","Stay a little hungry. It's better food."]},{"title":"Owners own their relationships. Employees rent them.","tag":"Ownership","img":"tiles/018.jpg","body":["Nobody has ever washed a rental car. You bring it back with a quarter tank and a bag from lunch in the back seat and you never think about it again, and you are not a bad person. It was never yours.","That's the difference the tile is after. A renter uses a relationship while he needs it. An owner maintains one for years, including the long stretches where there's nothing in it for him.","And the difference only shows up in the quiet periods. Everybody looks like an owner during a renewal.","The relationship is the asset. Not the account, not the contract. The relationship. And it's mine to keep up.","I'm good at this when there's a reason to be. I'm inconsistent when there isn't, which makes me a renter with very good manners.","So somebody would see me reach out with nothing to sell. Remember the surgery, the trip, the kid's season, and ask about it three months later. Follow up on something a client mentioned once and has forgotten telling me. And when the hard conversation shows up, handle it myself instead of routing it to somebody with a better title.","Wash the car nobody is checking."]},{"title":"Nobody has all the answers. That’s why we have each other.","tag":"We","img":"tiles/028.jpg","body":["I can sit on a stuck client situation for weeks. Then I'll mention it in a hallway almost by accident, and somebody solves it in four minutes with one question I never thought to ask.","Weeks of thinking. Four minutes of asking. That math should have changed my behavior permanently. It changes it for about a month.","Here's the thing I keep having to relearn. I was never supposed to know everything. That was never the deal. The entire reason to be in a group of sharp people is that the group's brain is bigger than mine, and using it is the intended behavior, not a workaround.","So the cost of pretending isn't embarrassment. The cost is the weeks.","Somebody would see me ask for help earlier than is comfortable. Bringing a stuck situation to a peer instead of grinding on it alone, which I would absolutely call diligence. Saying I don't know, let me find out, in front of a client, which is more credible than anything I could improvise. And being genuinely available when somebody asks me, at a bad time, on a Friday.","Ask on day one. It's the same question it will be on day thirty.","The wall doesn't live it. I do."]},{"title":"Growth mindset begins with personal growth.","tag":"Growth","img":"tiles/012.jpg","body":["There's a version of this job where I never learn anything again. I have enough material. I could run the same eight sessions for the next fifteen years and most people would never notice, and the ones who did notice would be too polite to say it out loud.","That's the actual risk in front of me. Not failure. Staleness.","Here's the law. My ceiling becomes their ceiling. I cannot ask a client to go somewhere I am not going.","And the growth that counts is in the thing I'm worst at, not the thing I enjoy, which is why most of my development over the years has really been a form of entertainment.","So what would somebody see? Something always going. A book, a course, a skill I'm currently bad at. Taking the same feedback I'd hand somebody else and doing something with it inside a week. Getting coached myself, out loud, where the people I coach can see it happening.","The student in me is the product. Not the expert.","The wall doesn't live it. I do."]},{"title":"Enthusiasm is shallow. Passion runs deep.","tag":"Mission","img":"tiles/005.jpg","body":["Everybody is a runner in January. The lot at the gym is full and you can't get a treadmill. Go back on the eleventh of February and you can have any machine in the building.","That's the difference between the two words. Enthusiasm is a parking lot in January. Passion is the guy on the treadmill in February who is not enjoying himself and is there anyway.","Enthusiasm is weather. Passion is climate.","I have never had a shortage of enthusiasm. That has never been my problem. My problem is the flat Tuesday in the middle of a slow month when nothing has landed, because that's the day the whole thing is actually decided, and it doesn't feel like a day when anything is being decided.","So what would somebody see? The same preparation for the smallest client as for the biggest one. Full presence on the low day, and nobody in the room able to tell which kind of day it was. The behavior still happening when the results haven't shown up yet, which is precisely the stretch where enthusiasm goes home.","Anybody can be great when it's working. That isn't a skill. That's a mood."]},{"title":"The best way to sell is to create experiences and meaning.","tag":"Selling","img":"tiles/033.jpg","body":["I watched Brian do this in my first week here. He had a client's numbers up on the screen and he circled one thing and said, you ever notice your people stop right about here? And the room went quiet, because he had just described something that was happening to them that they didn't think anybody outside could possibly know.","He told me the rule for it later. Be the investigative journalist, not the TV anchor. An anchor reads what's on the page. A journalist knows what's going on and tells you the story of what he found.","Here's the law. People don't buy information. They buy what the moment felt like and what it meant.","A presentation informs a man. An experience changes him, and only one of those two is still around on Thursday.","And I default to the anchor when I'm underprepared, which is a sentence I should probably sit with for a minute.","So somebody would see me build a moment instead of covering material. Asking the question that lets them see it themselves instead of telling them what I see. Telling the story instead of showing the chart. And making the prediction that lands.","Charts inform. Moments move."]},{"title":"Create growth by creating the problem.","tag":"Growth","img":"tiles/011.jpg","body":["The most dangerous client is the one with no problems. Everything's fine, the team's fine, the numbers are fine. Eleven months later it is not fine and nobody saw it coming, because fine is not a diagnosis. Fine is a fog.","Growth does not come out of comfort. It never has, for anybody, in any area of life. It comes out of a problem. And if there isn't one in front of me, my job is to go make one.","Which sounds aggressive, and is actually the kindest thing happening in the room.","So the way of being is this. Discomfort is the mechanism, not the side effect. Surfacing the hard thing is a service. And I have to be willing to do it to myself first, which is the half I'm worse at.","Somebody would see me raise the thing a client has been carefully driving around for six weeks. They'd see me hand a rep a stretch that will expose a gap, because the exposure is the point. And they'd see me sitting in rooms where I am not the most capable person there, on purpose, more than once a quarter.","When it goes quiet, go looking. Quiet is not the same as good."]},{"title":"One bad apple doesn’t write the rules.","tag":"We","img":"tiles/029.jpg","body":["Somewhere there's a company where you need two signatures for a forty dollar lunch, and it's because of one guy, years ago, and that guy is long gone. He's gone. His policy is still in the handbook, quietly insulting four hundred honest people every quarter.","That's what happens when one person gets to write the rules by behaving badly.","Policy built from the worst case always punishes the best people. They were never the problem, and now they're the ones living inside the fix.","And the reason we do it is that a rule is so much easier than a conversation. A rule takes fifteen minutes and no courage. The conversation takes forty-five and quite a lot.","So somebody would see me deal with the person directly instead of issuing a blanket change that lets me avoid the person. Not letting one bad client experience reset how I treat the next twenty. And still extending the benefit of the doubt after getting burned, which is the only version of this that actually costs anything.","Trust stays the default. Write the rules for the people who never needed them."]},{"title":"It’s your birthright to matter. Purpose is how you make it happen.","tag":"Mission","img":"tiles/006.jpg","body":["A hospital puts a plastic bracelet on a baby's wrist about nine minutes after it shows up. Nobody makes the baby audition. It hasn't done anything. It gets the bracelet anyway.","That's the first half of the tile, and it's the half people like. I don't have to earn the right to matter. That came with the bracelet.","But the second half is where it gets expensive. Mattering doesn't happen on its own. Purpose is the machine that turns the birthright into something a person can actually feel on a Thursday afternoon.","So I have to hold two things at once. I already count, and that is settled. And drift is a choice, and that one is on me.","Living it looks like being able to say who I'm here to serve, and what I want to be different about them because they worked with me, without stalling for time. It looks like turning down work that doesn't point at that, which is the part with a price on it. And it looks like being able to answer what I'm for, rather than describing what I do all day, which is a different question I have been answering by accident for years.","The wall doesn't live it. I do."]},{"title":"Assume good intent.","tag":"Candor","img":"tiles/020.jpg","body":["Somebody sends you a two-word email. Please advise. And by lunch you've written an entire movie about what he meant by it, and cast yourself as the man it's happening to, and you've been in a mood for three hours over a script nobody else has read.","I've done this. And it usually turns out the email was typed one-handed in a parking lot on a phone at nine percent.","Here's the law. Almost all friction is misunderstanding, not malice.","And my interpretation is a choice. That's the hard part, because it doesn't arrive feeling like a choice. It arrives feeling like a fact, and I get about four seconds to pick before the story sets.","So what would somebody see? Asking what he meant before reacting to what I assumed. Giving the benefit of the doubt to the message that landed badly. Being willing to say out loud, I might be reading this wrong. And never building a case about a person in my head that he will never get the chance to answer.","Most people are not against you. Most people are in a parking lot."]},{"title":"Hierarchical on the inside. Flat on the outside.","tag":"Hierarchy","img":"tiles/035.jpg","body":["A good restaurant kitchen is the most hierarchical place in America. There's a man calling the orders and everybody answers yes chef and nobody debates him, and the whole operation runs on a chain of command you could draw in pencil on a napkin.","Then you sit down in the dining room and none of it exists. Somebody brings you bread.","That's the tile. Inside, somebody owns every decision and everyone knows who. Outside, nobody should ever feel a ladder.","Structure is for us. It is not for them. And when it leaks out, a client gets the experience of being handled at the wrong level, or passed upward, or waiting on an approval he didn't know existed.","So somebody would see me be precise internally about who owns a decision, including the decisions that aren't mine. A client never once feeling like he's talking to the wrong person. The right colleague brought in without ceremony and without apology.","And they'd see me sit level with everyone I speak with. That's it. That's the whole thing, and it's the simplest sentence on that wall.","The wall doesn't live it. I do."]},{"title":"We have fun!","tag":"We","img":"tiles/031.jpg","body":["You can feel a clenched room in about four seconds. Everybody's polite, everybody's prepared, nobody's actually in there. I've run those rooms. I have been the reason for those rooms.","Unclenched is my best working state, and I know it, which makes the grim stretches entirely my own doing.","Here's the mechanic. Heavy energy repels people. Treating business development like a factory shift doesn't only feel worse, it works worse, because the energy I walk in with is the thing people are actually deciding about. Not the deck. The energy.","And when I'm enjoying myself I'm better at this job. Faster, sharper, braver, funnier. That's not a personality note. That's a performance note.","So somebody would see laughter in a session. Lightness carried into a hard conversation without dodging the hard part. Me noticing that the grinding itself has become the problem, and stopping. And changing my energy on purpose instead of waiting on results to come change it for me, which is a long wait and an unreliable one.","The work is serious. I don't have to be.","The wall doesn't live it. I do."]},{"title":"Foundational... Stop whining. Start owning.","tag":"Ownership","img":"tiles/016.jpg","body":["This one has the word foundational printed right on it, which is a little on the nose, and they weren't wrong. Everything else on that wall is standing on top of this.","Here's what happens the second I start complaining. I hand somebody else the steering wheel, and then I complain about the driving.","Whining has energy in it. That's why it feels like action. Whining moves nothing. It's a treadmill with opinions.","And there is always a piece that's mine. Always. Finding my piece is the fastest route back to having any control at all, and it is always smaller and more boring than the part I'd rather talk about.","I'm fluent in the sophisticated version of this. I can explain the market, the client's buying process, the timing, the budget cycle, the hiring freeze. All of it true. None of it mine.","So somebody would see me catch a complaint on the way out of my mouth and turn it into a request or a decision. Saying what I'm going to do instead of what's being done to me. And when my pipeline is thin, having no sentence at all about why, only a sentence about what I'm changing this week.","An explanation is just a complaint in a suit."]},{"title":"From me to we.","tag":"We","img":"tiles/027.jpg","body":["I keep a private scoreboard. Nobody else can see it. It's got everybody's numbers on it, and where they were in year six, and where I am right now, and it updates on its own, and it has never once helped me close anything.","The comparison game is good while it serves you and it kills you the moment it masters you. Mine crosses over more often than I'd like, and it never announces itself, because on the way over it still feels like ambition.","Here's the shift. My scoreboard to ours. Small preposition. Large change.","And the firm's win is my win. That's not a poster, that's arithmetic. Nobody's path here has looked like anybody else's, including mine, so measuring my year six against somebody's year six is comparing two things that were never the same thing.","Somebody would see me say we with clients and mean it. Pull in a colleague who's better suited even when I could handle it myself. Celebrate another person's month out loud, in the room, which is a very small act that is not small at all.","Burn the scoreboard. Nobody's reading it but you."]},{"title":"Mission leads to money, not vice versa.","tag":"Mission","img":"tiles/008.jpg","body":["You can tell in about ninety seconds when somebody is after your money. Walk onto a car lot. The guy asks what you do for a living before he asks what you drive. And nothing he says after that lands, because you already know what the conversation is.","Clients can do this too. They're doing it to me in the first meeting, before I've said much of anything.","Money is a byproduct. It's the receipt. It is not the reason.","And I have gotten this backwards. There are months where the number is close and I can feel my own questions changing shape, getting a little more leading, a little more about me. Nobody has ever called me out on it. They don't have to. They just don't call back.","So what would somebody see? A first meeting that leads with their problem instead of my fee. A walk-away from a fit that's wrong even when the number is good, and saying so out loud. Outcomes on the table before price. And nobody I work with ever getting the feeling they were being moved somewhere.","Chase the money and it runs. Chase the mission and it follows you home."]},{"title":"Ownership can only be accepted, not assigned.","tag":"Ownership","img":"tiles/019.jpg","body":["You can hand a man a leash. You cannot hand him a dog. The leash transfers in about a second, and the dog takes six months, and some people never take the dog at all. They just hold the leash and wait for you to walk it.","I have run entire engagements on leashes.","Here's the law. Agreement and ownership are different things, and most of the times I thought I had the second one, I had the first. Nodding is not owning. Nodding is very often the opposite of owning.","So if I want ownership, I have to ask for it, and then be quiet long enough for him to say it in his own words. His words. Not mine, handed back to me politely.","Somebody would see me stop assigning and start getting commitments. Ask a rep what he's committing to and then say nothing for eleven very long seconds. Confirm it back in his language. And when a person won't take it, say that out loud instead of picking it up and carrying it myself, which is the move that keeps both of us exactly where we are.","You can carry a man's bag for a mile. You can't carry it for a career.","The wall doesn't live it. I do."]},{"title":"Being around strong people requires a thick skin.","tag":"Candor","img":"tiles/021.jpg","body":["You don't get good at boxing by hitting a bag. The bag never hits back, which is exactly what makes it so pleasant, and why a man can work a bag for two years and still get dropped in ninety seconds by somebody who spars.","If I want to be around sharp people, I'm going to get hit. That isn't a flaw in the arrangement. That is the arrangement.","Soft rooms teach nothing.","And the pushback is the thing I came for. Getting bruised is not the same as getting attacked, though the two feel identical for about four seconds, and what I do inside those four seconds is the entire tile.","Somebody would see me stay in the room while I'm getting challenged, instead of getting quiet, or getting busy, or getting suddenly very gracious. First move a follow-up question, not a defense. Thanking a person for a hard piece of feedback and meaning it by Thursday, if not by Tuesday.","And seeking out the people who'll tell me I'm wrong over the people who'll tell me I'm fine. I already know where the fine people are. They're easy to find. That's what's wrong with them."]},{"title":"People come to us to sharpen their sword, so we need to always be sharpening ours.","tag":"Sharpen Each Other","img":"tiles/025.jpg","body":["A dull knife is more dangerous than a sharp one. Ask anybody who cooks. A dull knife slips, because you have to push it, and the pushing is what cuts you.","The tool I bring into every engagement is me. Not the material, not the deck. Me. A dull coach can't sharpen anybody no matter how good the content is. Worse than that, he has to push, and the pushing is the part people can feel.","So sharpening myself is the product. It is not the thing I get to when the week is light. The week is never light.","And the moment I'm running purely on what I already know, the edge is already going. It goes quietly. Nobody comes and tells you.","Somebody would see me block time for my own reps and protect it the way I protect client time. Practicing a skill before teaching it, rather than teaching it and calling that practice, which is a trick I have been running on myself for years. Bringing in new material instead of running the same deck for a fifth year. And debriefing my own calls as hard as I debrief theirs.","Sharpen the thing doing the cutting."]},{"title":"Racing cars... When you push the limits, you crash more often. C’est la guerre.","tag":"Growth","img":"tiles/014.jpg","body":["The French at the end means, that's war. Somebody put it on a tile because there is no way to say it nicely.","That's the physics. If I'm driving at the limit, I am going to wreck sometimes. The crashes are a byproduct of the speed. They are not evidence that I'm a bad driver, and the fact that I keep reading them as evidence is its own separate problem.","A clean record might just mean I've been driving slow.","And there's a second thing in here that took me a while. The limits I'm testing now are not the limits from year one. Push into territory nobody around you has pushed into and the crash gets bigger. Different limits, bigger crash, same lesson.","So what does it look like? Taking the swing on the bigger client instead of the comfortable one. Trying the risky intervention in a session because it's the one that could actually change something. And when it goes badly, naming it plainly, fixing what's fixable, and getting back in the car that week.","The temptation is to shrink the goal until no crash is possible. And it works. You will never crash. You will also never arrive."]},{"title":"People are human, hence the constant need for forgiveness. Put it behind you and move on.","tag":"We","img":"tiles/030.jpg","body":["There's a residue that builds up in year five or six that you don't have in year one. In year one you don't know what you don't know, so nothing sticks to you. By year six you've got a shelf, and everything on it is labeled.","People will let me down and I will let people down. Not occasionally. Constantly. That isn't cynicism, that's just the material we're working with.","So forgiveness can't be an event. It has to be a habit, like brushing your teeth, and about that dramatic.","And holding onto something costs me far more than it costs him. He's fine. He's forgotten. I'm the one carrying it into a meeting eight months later and wondering why the room feels heavy.","Which goes for me too, and that's the harder half. I can forgive a client an entire quarter and give myself nothing at all for one bad Tuesday.","Somebody would see me say the thing that needs saying and then actually put it down, rather than saying it and keeping it. Not raising an old miss to win a current point. Repairing fast after a tense exchange instead of letting it sit a week and calling that space.","Put it down. It is not getting lighter."]},{"title":"Truth over harmony.","tag":"Candor","img":"tiles/023.jpg","body":["The worst meetings I've ever run ended great. Everybody nodding, wrapped five minutes early, good handshakes at the door. And the thing I didn't say sat there and grew.","Harmony that depends on nobody saying the true thing isn't harmony. It's a delay with better manners.","Here's the law. Comfortable silence is expensive, and it compounds.","People don't hire me for agreement. They can get agreement anywhere. They can get it for free, at home, from people who love them.","So somebody would see me name the elephant in the first twenty minutes, instead of working around it for an hour and then mentioning it in the parking lot on the way to the car. Telling a client the thing that might cost me the renewal, because it's true and because he needs it. And never letting a session end pleasantly with nothing actually said.","That's the failure mode I have to watch for, and it's a hard one, because it doesn't feel like failure. It feels like a good meeting.","Nodding is just nodding.","The wall doesn't live it. I do."]},{"title":"Boss is not a useful term.","tag":"Hierarchy","img":"tiles/034.jpg","body":["The word boss does exactly one thing in a conversation, and it isn't a good thing. The second it's in the room, everybody stops working on the problem and starts working on the hierarchy. Who has to agree. Who can't be contradicted. Who's getting told about this later.","Boss describes a position. It says nothing at all about contribution. And the useful person in a room is very often not the positioned one.","Here's the law. Authority comes from being useful.","I should be able to earn my standing in any room without a single person knowing my title. The days I can't are the days I lean on it.","So somebody would see me relate level with clients and colleagues regardless of the chart. Not hiding behind seniority to win a point I couldn't win on the merits, which is the cheapest move available and always within reach. Not deferring to a title instead of engaging the actual argument, which is the same cowardice pointed the other direction.","And the newest person in the room gets the same weight from me as the most senior one. The same weight. Not extra kindness. Weight."]},{"title":"The ripple effect... Intention → Making a difference → Success and money.","tag":"Mission","img":"tiles/009.jpg","body":["Three rings, one inside the other. Intention is the small one in the middle. Making a difference is the ring around it. Success and money is the big one on the outside. The order isn't decoration. It's plumbing.","Nobody has ever thrown a rock at the edge of a pond and gotten a ripple in the middle.","So if I want the outer ring, I work on the inner one. That's the whole tile.","And the inner one is small and boring and takes about ninety seconds. Before a session, set an intention. Not a plan, not an agenda. An intention. What do I want to be true for this person when we're done?","I skip it constantly. Which is how a man runs a very organized meeting that changes nothing.","Somebody would see me measure a week by differences made instead of hours delivered. And they'd see me watching for the second ripple, the rep who starts coaching somebody else because of something I taught him, which is the ring I will never get to see the edge of.","The wall doesn't live it. I do."]},{"title":"Feedback comes from the heart, not ego.","tag":"Candor","img":"tiles/022.jpg","body":["There's a particular tone a man uses when he's about to be helpful and he is actually about to be right. I know it well, because it's mine. It's a little slower than my normal voice. It is very reasonable.","Here's the test, and it takes two seconds. Who is this for?","Feedback that serves me lands as criticism no matter how carefully I word it. Feedback that comes from actually caring about the person lands as care, even when it's blunt. Same content. Completely different arrival.","And sometimes I want to make a point because I'm right. That isn't feedback. That's scorekeeping with a nicer name on it.","So somebody would see me run the check before the hard conversation, and then drop the point I only wanted to make in order to win. Delivering the difficult thing privately and warmly rather than publicly and precisely, which is a temptation with a real pull to it.","And there's only one test that matters, which is how the person walks out of the room. Graded, or backed. You can feel which one happened. So can he."]},{"title":"Buy the decision.","tag":"Growth","img":"tiles/010.jpg","body":["You know the guy who buys a truck and then spends the next eleven months reading reviews of the truck he didn't buy. He has the truck. It's in the driveway. He drives it to work every morning and hates it a little, on purpose, as a hobby.","That's a decision that never got bought.","Here's the law. A half-bought decision produces half a result, and then the half result proves the doubt was right, which is the trap closing.","Most decisions are recoverable. Indecision is the one that isn't. I have spent far more on hedging than I have ever spent on being wrong.","So what does buying it look like? Picking an approach and running it long enough to get a real read, instead of bailing at the first friction and calling that discernment. Not relitigating something I already settled. Telling people what I decided and why, out loud, so there's nothing left to interpret. And taking the escape hatch out of my language, the maybe, the we'll see, the little door I leave open so I never have to be the one who chose.","Wrong is cheap. Half-in is expensive."]},{"title":"Learning from failure is essential to progress.","tag":"Failure","img":"tiles/003.jpg","body":["I've got a folder for proposals. I do not have a folder called Why That One Didn't Close.","That's the whole problem, sitting right there on a hard drive.","Failure isn't the tuition. The learning is the tuition. A loss I never open again is just a loss, and I have collected a great many of those, neatly, in order, by date.","And the belief underneath it is simple and hard at the same time. Every miss has information in it, and I am allowed to be bad at something on my way to being good at it. Nobody skips that part. Not Rocky. Not anybody.","So here's what it looks like when a person is actually doing this. They debrief out loud. They can tell you in specific words what they'd do differently, not soft ones, not be more assertive. They use their own miss as the teaching example in front of a client instead of always reaching for somebody else's. And when a client blows something, their first question is what it taught him, not how to make him feel better about it.","A loss you look at is a lesson. A loss you file is just a loss."]},{"title":"Life is too short not to do something that matters.","tag":"Mission","img":"tiles/007.jpg","body":["I'll look at a full calendar and feel good about it for about four seconds. Then I'll ask what any of it produced. It's a bad four seconds.","Time is the scarce thing. Not opportunity. There is always more opportunity. There is never more Thursday.","And a full calendar and a meaningful year are two completely different outcomes, which is inconvenient, because one of them is much easier to measure and much easier to mention to people.","Busy is not a badge. I have worn it like one.","So what does it look like when somebody actually believes this? They audit the calendar against what it produced, and then they cut or hand off the part that didn't earn its seat. They go deeper with the handful of clients where they can really change something, instead of spreading evenly across everybody in the name of being fair. And at the end of the year, the work they're proudest of is work they chose, not work that filled the space available.","A full week and a good year are not the same animal."]},{"title":"Leadership. Ownership.","tag":"Ownership","img":"tiles/017.jpg","body":["Two words. No verb, nothing connecting them, which I think is the point of it. They're the same thing.","Leadership without ownership is commentary. And commentary is easy to produce. I can produce it all day long, in good meetings, with real insight, and change absolutely nothing.","Whoever owns the outcome is the leader in that moment. Title or no title. Nobody hands that over. You pick it up off the floor.","I've sat in rooms watching something drift, knowing exactly what should happen, waiting on the person whose job it technically was. That's not patience. I have called it patience.","So what does it look like? Claiming an outcome out loud so everybody knows it has an owner and who the owner is. Seeing something drift and picking it up instead of narrating it. And giving clear direction when the group needs direction, rather than laying out three options, which is what I do when I want credit for deciding without being the one who decided.","Pick up the outcome. The title shows up later, if it shows up at all.","The wall doesn't live it. I do."]},{"title":"When we level up, we elevate each other’s journey.","tag":"Sharpen Each Other","img":"tiles/026.jpg","body":["Run with somebody faster than you and you'll run faster. You won't decide to. Your legs just do it, and you find out afterward when you look at the watch.","It works the other direction too, which is the part nobody puts on a tile. Run with somebody slower and you'll slow down, and you will feel wonderful the entire time.","So my own improvement isn't self-interest. It's a contribution. That reframe takes the guilt out of spending a Tuesday morning on myself and sets something heavier down in its place, which is a responsibility.","Somebody would see me bring something new back to the team instead of quietly using it alone. Raising the standard in a session and letting people climb to it, rather than meeting them where it's comfortable, which is a kindness that isn't one.","And they'd hear me say out loud what I'm working on right now. Not what I've mastered. What I'm currently bad at. Because naming it gives everybody in earshot permission to be working on something too.","Set the pace and somebody behind you runs faster. You'll never know which one.","The wall doesn't live it. I do."]},{"title":"Success is just failure that’s been played around with... a lot.","tag":"Failure","img":"tiles/004.jpg","body":["WD-40 is called WD-40 because the first thirty-nine tries didn't work. Water displacement, fortieth formula. The can in my garage is a monument to thirty-nine failures nobody remembers.","Nothing works the first time. Not the workshop, not the opening question, not the new way of running a first meeting.","And that's the part I keep trying to skip. I want version one to be version eight. So I'll sit on something good for three weeks polishing it, which is a very productive-looking way of not running it.","Here's the law. The number of attempts beats the quality of any single attempt.","Somebody watching me would see me run the thing before it's ready. They'd see me change one variable and go again instead of scrapping the whole idea. They'd see me keep track of what I actually tried and what it actually produced. And they would not see me shelve something good because of one bad run, because one bad run isn't data. It's a first try.","The wall doesn't live it. I do."]},{"title":"Spit on it. Stomp on it. Tell it it's stupid. Still has the same value.","tag":"Worth","img":"tiles/001.jpg","body":["Somebody has done this to you at a seminar. A guy holds up a twenty dollar bill and asks who wants it. Then he crumples it into a ball. Then he drops it and grinds his heel into it, and he asks again, and every hand is still up. It's a cheap trick and it works every single time.","It works because the bill has no opinion about what just happened to it. Twenty dollars is twenty dollars. The shoe print doesn't come off the price.","So here's the law. My worth was settled before the day started, and nothing that happens between now and dinner moves it.","I'm bad at this one. I can lose a deal on a Tuesday and spend all of Wednesday quietly auditing whether I'm any good at my job, which is a strange thing to do to a man who has been doing this for six years. A no is a fact about timing. It is not a fact about me.","What would somebody outside of me see? I pick the phone back up the same afternoon. I don't go dark for three days after a session that flopped. And the prospect who blew me off gets the same voice as the one who said yes.","The wall doesn't live it. I do."]}];
+  var wall = document.getElementById('wall');
+  var filters = document.getElementById('filters');
 
-  var root = document.documentElement;
-  var wallEl = document.getElementById('wall');
-  var sheet = document.getElementById('sheet');
-  var sheetImg = document.getElementById('sheetImg');
-  var sheetTag = document.getElementById('sheetTag');
-  var sheetTitle = document.getElementById('sheetTitle');
-  var sheetBody = document.getElementById('sheetBody');
-  var closeBtn = document.getElementById('closeBtn');
-  var prevBtn = document.getElementById('prevBtn');
-  var nextBtn = document.getElementById('nextBtn');
-  var current = -1;
-  var lastFocus = null;
-  var activeTag = null;
-
-  WALL.forEach(function (c, i) {
-    var b = document.createElement('button');
-    b.className = 'tile';
-    b.type = 'button';
-    b.setAttribute('aria-label', 'Tile ' + (i + 1) + ' of ' + WALL.length);
-    var im = document.createElement('img');
-    im.src = c.img;
-    im.alt = '';
-    im.decoding = 'async';
-    b.appendChild(im);
-    b.addEventListener('click', function () { open(i, b); });
-    wallEl.appendChild(b);
-  });
-
-  function render(i) {
-    var c = WALL[i];
-    current = i;
-    sheetImg.src = c.img;
-    sheetTag.textContent = c.tag;
-    sheetTitle.textContent = c.title;
-    sheetBody.innerHTML = '';
-    c.body.forEach(function (para) {
-      var p = document.createElement('p');
-      p.textContent = para;
-      sheetBody.appendChild(p);
+  function apply(tag) {
+    Array.prototype.forEach.call(wall.children, function (el) {
+      el.classList.toggle('dim', !!tag && el.dataset.tag !== tag);
     });
-    var vis = visibleIndexes();
-    var at = vis.indexOf(i);
-    prevBtn.disabled = at <= 0;
-    nextBtn.disabled = at === -1 || at === vis.length - 1;
-    sheet.scrollTop = 0;
-  }
-
-  function open(i, fromEl) {
-    lastFocus = fromEl || null;
-    render(i);
-    sheet.hidden = false;
-    document.body.classList.add('locked');
-    closeBtn.focus({ preventScroll: true });
-  }
-
-  function close() {
-    sheet.hidden = true;
-    document.body.classList.remove('locked');
-    if (lastFocus) lastFocus.focus({ preventScroll: true });
-  }
-
-  function visibleIndexes() {
-    var out = [];
-    WALL.forEach(function (c, i) { if (!activeTag || c.tag === activeTag) out.push(i); });
-    return out;
-  }
-
-  function step(d) {
-    var vis = visibleIndexes();
-    var at = vis.indexOf(current);
-    var n = vis[at + d];
-    if (n === undefined) return;
-    lastFocus = wallEl.children[n];
-    render(n);
-    sheet.scrollTop = 0;
-  }
-
-  /* ---- tag filters ---- */
-  var TAGS = ["Worth", "Failure", "Mission", "Growth", "Ownership", "Candor", "Sharpen Each Other", "We", "Perspective", "Selling", "Hierarchy"];
-  var filtersEl = document.getElementById('filters');
-
-  function applyFilter() {
-    Array.prototype.forEach.call(wallEl.children, function (el, i) {
-      el.classList.toggle('dim', !!activeTag && WALL[i].tag !== activeTag);
-    });
-    Array.prototype.forEach.call(filtersEl.children, function (b) {
-      b.setAttribute('aria-pressed', String((b.dataset.tag || null) === activeTag));
+    Array.prototype.forEach.call(filters.children, function (b) {
+      b.setAttribute('aria-pressed', String((b.dataset.tag || '') === (tag || '')));
     });
   }
 
-  [null].concat(TAGS).forEach(function (tag) {
-    var b = document.createElement('button');
-    b.className = 'pill';
-    b.type = 'button';
-    b.textContent = tag === null ? 'All' : tag;
-    if (tag !== null) b.dataset.tag = tag;
-    b.setAttribute('aria-pressed', String(tag === activeTag));
+  Array.prototype.forEach.call(filters.children, function (b) {
     b.addEventListener('click', function () {
-      activeTag = tag;
-      applyFilter();
+      var tag = b.dataset.tag || '';
+      location.hash = tag ? tag : '';
+      apply(tag);
     });
-    filtersEl.appendChild(b);
-  });
-  applyFilter();
-
-  closeBtn.addEventListener('click', close);
-  prevBtn.addEventListener('click', function () { step(-1); });
-  nextBtn.addEventListener('click', function () { step(1); });
-  sheet.addEventListener('click', function (e) { if (e.target === sheet) close(); });
-
-  document.addEventListener('keydown', function (e) {
-    if (sheet.hidden) return;
-    if (e.key === 'Escape') { e.preventDefault(); close(); }
-    if (e.key === 'ArrowRight') { e.preventDefault(); step(1); }
-    if (e.key === 'ArrowLeft') { e.preventDefault(); step(-1); }
   });
 
+  function fromHash() {
+    var h = (location.hash || '').replace(/^#/, '');
+    var known = Array.prototype.some.call(filters.children, function (b) { return b.dataset.tag === h; });
+    apply(known ? h : '');
+  }
+  window.addEventListener('hashchange', fromHash);
+  fromHash();
+})();
+</script>
+<script>
+(function () {
+  var root = document.documentElement;
   function applyTheme(t) {
     root.setAttribute('data-theme', t);
-    try { localStorage.setItem('ctd-theme', t); } catch (err) {}
+    try { localStorage.setItem('cw-theme', t); } catch (err) {}
   }
   var saved = 'light';
-  try { saved = localStorage.getItem('ctd-theme') || 'light'; } catch (err) {}
+  try { saved = localStorage.getItem('cw-theme') || 'light'; } catch (err) {}
   applyTheme(saved === 'dark' ? 'dark' : 'light');
   document.getElementById('themeBtn').addEventListener('click', function () {
     applyTheme(root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
   });
 })();
 </script>
-
 </body>
 </html>
